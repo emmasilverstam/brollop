@@ -71,6 +71,6 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.
 @media (max-width: 760px) {
 	.hero-image-wrap { width: calc(100% + 48px); margin-inline: -24px; padding: 12px 12px 48px; }
 	.hero-image { height: 300px; }
-	.image-note { left: 12px; right: 12px; padding: 4px 8px 8px; }
-	.image-note-text { display: block; max-width: 100%; font-size: clamp(13px, 4vw, 17px); line-height: 1.15; white-space: nowrap; }
+	.image-note { left: 12px; right: 12px; bottom: 0; height: 48px; display: flex; align-items: center; justify-content: center; padding: 0 8px; }
+	.image-note-text { display: block; width: 100%; max-width: 100%; font-size: clamp(14px, 4.4vw, 18px); line-height: 1.15; white-space: nowrap; }
 }
