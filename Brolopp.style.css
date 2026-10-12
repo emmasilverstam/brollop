@@ -23,7 +23,7 @@ body.has-scrolled:before { top: -8px; }
 body.header-visible:before { top: 62px; }
 body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.png'); }
 .about-section { background: var(--blue); color: var(--ink); position: relative; overflow: hidden; }
-@media (max-width: 760px) { body:before, body:after { width: 190px; height: 190px; } body:before { top: 66px; left: -12px; } body:after { right: -10px; bottom: -10px; } }
+@media (max-width: 760px) { body:before, body:after { width: 190px; height: 190px; } body:before { top: 66px; left: -12px; } body:after { right: -10px; bottom: 0; width: 240px; height: 240px; } }
 @media (max-width: 760px) { body.header-visible:before { top: 66px; } }
 
 /* Scroll reveals keep each section moving at a calm, staggered pace. */
