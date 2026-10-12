@@ -8,7 +8,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Dancing+Script:wght@500;600&family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="Brolopp.style.css?v=flower-bottom0">
+	<link rel="stylesheet" href="Brolopp.style.css?v=rsvp-flow-2026">
 </head>
 <body>
 	<header class="site-header">
@@ -72,9 +72,62 @@
 			<div class="section-shell travel-grid reveal-stagger"><article><span class="travel-icon">01</span><h3>Parkering</h3><p>Parkering finns vid färjeläget på Koön. Därifrån går färjan över till Marstrandsön.</p></article><article><span class="travel-icon">02</span><h3>Kollektivtrafik</h3><p>Buss 220 går från Göteborg till Marstrand. Planera resan på <a href="https://www.vasttrafik.se" target="_blank" rel="noreferrer">Västtrafik ↗</a>.</p></article><article><span class="travel-icon">03</span><h3>Transport</h3><p>Vi återkommer med mer information om taxi och transport mellan platserna.</p><span class="tag">TBD</span></article><article><span class="travel-icon">04</span><h3>Boende</h3><p>Vi rekommenderar <a href="#" class="placeholder-link">Marstrands Havshotell ↗</a>. Rabattkod kommer.</p><span class="tag">TBD</span></article></div>
 		</section>
 
-		<section class="rsvp-section" id="osa"><div class="section-shell rsvp-layout"><div class="reveal"><p class="eyebrow">03 — OSA</p><h2>Kommer du<br><em>fira med oss?</em></h2><p class="rsvp-copy">Svara senast <strong>1 april 2026</strong>. Vi längtar efter att få veta om du kommer.</p><div class="rsvp-stamp">OSA<br><small>1.4.26</small></div></div><form class="rsvp-form reveal reveal-delay" id="rsvp-form"><label for="name">Namn</label><input id="name" name="name" type="text" placeholder="För- och efternamn" required><label for="email">E-post</label><input id="email" name="email" type="email" placeholder="din@email.se" required><fieldset><legend>Jag kommer gärna</legend><label class="choice"><input type="radio" name="attendance" value="ja" required> <span>Ja, självklart!</span></label><label class="choice"><input type="radio" name="attendance" value="nej"> <span>Tyvärr inte</span></label></fieldset><label for="message">Meddelande <span class="optional">(valfritt)</span></label><textarea id="message" name="message" rows="3" placeholder="Allergier, önskemål eller en hälsning..."></textarea><button class="button button-light" type="submit">Skicka svar <span>↗</span></button><p class="form-success" id="form-success" role="status">Tack, vi har tagit emot ditt svar!</p></form></div></section>
 
 		<section class="info-section content-section section-shell" id="info"><div class="section-heading reveal"><p class="eyebrow">04 — Information</p><h2>Bra att<br><em>veta.</em></h2></div><div class="info-grid reveal-stagger"><article><span class="info-number">01</span><h3>Barnfritt</h3><p>Vår dag är barnfri, med undantag för de allra minsta i familjen. Vi hoppas på förståelse och en festlig kväll för alla vuxna.</p></article><article><span class="info-number">02</span><h3>Klädkod</h3><p><strong>Kavaj.</strong> Tänk sommar, personligt och bekvämt nog för dans. Bär det du känner dig fin i.</p></article><article><span class="info-number">03</span><h3>Tal &amp; toastmaster</h3><p>Vill du hålla tal? Anmäl det till vår toastmaster <a href="mailto:toast@emmaochalex.se">toast@emmaochalex.se</a> senast 1 juni.</p></article><article><span class="info-number">04</span><h3>Presenter</h3><p>Inga presenter behövs. Om ni vill får ni gärna bidra lite till vår bröllopsresa till Santorini, Sri Lanka och Maldiverna.</p></article><article class="wide-info"><span class="info-number">05</span><h3>Fredagshäng</h3><p>För den som är på plats redan på fredagen ses vi för ett avslappnat häng på Strandverket från kl. 18.00. Ingen OSA behövs.</p></article></div></section>
+
+		<section class="rsvp-section" id="osa">
+			<div class="section-shell rsvp-layout">
+				<div class="reveal">
+					<p class="eyebrow">03 — OSA</p>
+					<h2>Kommer du<br><em>fira med oss?</em></h2>
+					<p class="rsvp-copy">Svara senast <strong>1 april 2026</strong>. Vi längtar efter att få veta om du kommer.</p>
+					<div class="rsvp-stamp">OSA<br><small>1.4.26</small></div>
+				</div>
+				<form class="rsvp-form reveal reveal-delay" id="rsvp-form" action="https://formsubmit.co/emma-silverstam@hotmail.se" method="POST">
+					<input type="hidden" name="_subject" value="OSA - Gustav och Karin">
+					<input type="hidden" name="_template" value="table">
+					<input class="form-honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+					<fieldset class="guest-count-control">
+						<legend>Välj antalet personer att OSA för:</legend>
+						<div class="guest-count-options">
+							<label class="guest-count-option"><input type="radio" name="guest-count" value="1" required><span>1</span></label>
+							<label class="guest-count-option"><input type="radio" name="guest-count" value="2" required><span>2</span></label>
+						</div>
+					</fieldset>
+					<div class="rsvp-people-form" id="rsvp-people-form" hidden>
+						<div id="guest-fields" aria-live="polite"></div>
+						<label for="contact-email">E-post för kontakt</label>
+						<input id="contact-email" name="email" type="email" autocomplete="email" placeholder="din@email.se" required>
+						<button class="button button-light" type="submit">Skicka svar <span>↗</span></button>
+						<p class="form-success" id="form-success" role="status" aria-live="polite"></p>
+					</div>
+					<template id="attendee-template">
+						<fieldset class="person-fields">
+							<legend data-person-heading></legend>
+							<label data-label-for="firstName">Förnamn</label>
+							<input data-field="firstName" type="text" autocomplete="given-name" required>
+							<label data-label-for="lastName">Efternamn</label>
+							<input data-field="lastName" type="text" autocomplete="family-name" required>
+							<fieldset class="attendance-field">
+								<legend>Kommer du på bröllopet?</legend>
+								<div class="attendance-options">
+									<label class="choice"><input data-attendance type="radio" value="yes" required><span>Ja, självklart!</span></label>
+									<label class="choice"><input data-attendance type="radio" value="no" required><span>Nej, tyvärr</span></label>
+								</div>
+							</fieldset>
+							<div class="attendee-details" hidden>
+								<label data-label-for="allergies">Eventuella allergier eller annan specialkost <span class="optional">(valfritt)</span></label>
+								<textarea data-field="allergies" rows="2"></textarea>
+								<label data-label-for="danceSong">Om den här låten spelas på festen lovar jag att dansa <span class="optional">(valfritt)</span></label>
+								<input data-field="danceSong" type="text" placeholder="Låttitel och artist">
+								<label data-label-for="questions">Har du några övriga frågor eller funderingar? <span class="optional">(valfritt)</span></label>
+								<textarea data-field="questions" rows="2"></textarea>
+							</div>
+						</fieldset>
+					</template>
+				</form>
+			</div>
+		</section>
 
 		<section class="about-section" id="om-oss"><div class="section-shell"><p class="eyebrow reveal">05 — Om oss</p><div class="about-head reveal"><h2>Två personer,<br><em>en historia.</em></h2><p>Vi träffades en regnig kväll på en bar i Göteborg. Sedan dess har vi hunnit med många resor, alldeles för många pastamiddagar och ett gemensamt beslut: att göra livet tillsammans.</p></div><div class="photo-grid reveal-stagger reveal-delay"><div class="photo photo-one"></div><div class="photo photo-two"></div><div class="photo-caption">Mer av oss, snart på riktigt.</div></div></div></section>
 
@@ -86,7 +139,72 @@
 		const weddingDate = new Date('2027-06-05T14:30:00+02:00').getTime();
 		const countdown = () => { const distance = weddingDate - Date.now(); if (distance <= 0) { document.getElementById('countdown').innerHTML = '<p>Idag firar vi!</p>'; return; } const values = { days: Math.floor(distance / 86400000), hours: Math.floor(distance / 3600000) % 24, minutes: Math.floor(distance / 60000) % 60, seconds: Math.floor(distance / 1000) % 60 }; Object.entries(values).forEach(([key, value]) => { document.getElementById(key).textContent = String(value).padStart(2, '0'); }); };
 		countdown(); setInterval(countdown, 1000);
-		document.getElementById('rsvp-form').addEventListener('submit', (event) => { event.preventDefault(); document.getElementById('form-success').classList.add('visible'); event.target.reset(); });
+		const rsvpForm = document.getElementById('rsvp-form');
+		const guestCountRadios = rsvpForm.querySelectorAll('input[name="guest-count"]');
+		const peopleForm = document.getElementById('rsvp-people-form');
+		const guestFields = document.getElementById('guest-fields');
+		const attendeeTemplate = document.getElementById('attendee-template');
+		const renderAttendees = (count) => {
+			guestFields.replaceChildren();
+			for (let personNumber = 1; personNumber <= count; personNumber += 1) {
+				const person = attendeeTemplate.content.firstElementChild.cloneNode(true);
+				person.querySelector('[data-person-heading]').textContent = `Person ${personNumber}`;
+				person.querySelectorAll('[data-field]').forEach((field) => {
+					const fieldName = field.dataset.field;
+					field.id = `person-${personNumber}-${fieldName}`;
+					field.name = `people[${personNumber}][${fieldName}]`;
+					person.querySelector(`[data-label-for="${fieldName}"]`).htmlFor = field.id;
+				});
+				const attendanceRadios = person.querySelectorAll('[data-attendance]');
+				attendanceRadios.forEach((radio) => {
+					radio.name = `people[${personNumber}][attendance]`;
+				});
+				const attendeeDetails = person.querySelector('.attendee-details');
+				const updateAttendeeDetails = () => {
+					const isAttending = person.querySelector('[data-attendance]:checked')?.value === 'yes';
+					attendeeDetails.hidden = !isAttending;
+					attendeeDetails.querySelectorAll('input, textarea').forEach((field) => {
+						field.disabled = !isAttending;
+					});
+				};
+				attendanceRadios.forEach((radio) => radio.addEventListener('change', updateAttendeeDetails));
+				updateAttendeeDetails();
+				guestFields.append(person);
+			}
+		};
+		guestCountRadios.forEach((radio) => radio.addEventListener('change', () => {
+			if (!radio.checked) return;
+			guestCountRadios.forEach((option) => {
+				option.closest('.guest-count-option').classList.toggle('is-selected', option.checked);
+			});
+			document.getElementById('form-success').classList.remove('visible', 'is-error');
+			renderAttendees(Number(radio.value));
+			peopleForm.hidden = false;
+		}));
+		rsvpForm.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			const formSuccess = document.getElementById('form-success');
+			const submitButton = rsvpForm.querySelector('button[type="submit"]');
+			submitButton.disabled = true;
+			formSuccess.textContent = 'Skickar ditt svar...';
+			formSuccess.classList.add('visible');
+			formSuccess.classList.remove('is-error');
+			try {
+				const response = await fetch('https://formsubmit.co/ajax/emma-silverstam@hotmail.se', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+					body: JSON.stringify(Object.fromEntries(new FormData(rsvpForm).entries()))
+				});
+				const result = await response.json();
+				if (!response.ok || (result.success !== true && result.success !== 'true')) throw new Error('RSVP submission failed');
+				formSuccess.textContent = 'Tack för ditt svar!';
+			} catch {
+				formSuccess.textContent = 'Svaret kunde inte skickas. Försök igen om en stund.';
+				formSuccess.classList.add('is-error');
+			} finally {
+				submitButton.disabled = false;
+			}
+		});
 		const revealItems = document.querySelectorAll('.reveal, .reveal-stagger');
 		const revealObserver = new IntersectionObserver((entries, observer) => {
 			entries.forEach((entry) => {
