@@ -79,16 +79,17 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.
 .guest-count-control { margin-bottom: 28px !important; }
 .guest-count-control > legend { margin-bottom: 18px; text-align: center; text-transform: none; letter-spacing: 0; font-size: 14px; }
 .guest-count-options { display: flex; justify-content: center; gap: 12px; }
-.guest-count-option { position: relative; display: grid !important; place-items: center; width: 60px; height: 60px; margin: 0 !important; border: 1px solid rgba(245,240,232,.55); color: var(--cream); font-size: 20px !important; font-weight: 500 !important; text-align: center; text-transform: none !important; letter-spacing: 0 !important; cursor: pointer; }
-.guest-count-option.is-selected { background: var(--ink); border-color: var(--cream); }
+.guest-count-option { position: relative; display: grid !important; place-items: center; width: 60px; height: 60px; margin: 0 !important; border: 1px solid rgba(245,240,232,.65); border-radius: 5px; color: var(--cream); font-size: 20px !important; font-weight: 500 !important; text-align: center; text-transform: none !important; letter-spacing: 0 !important; cursor: pointer; transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
+#rsvp-form .guest-count-option:hover, #rsvp-form .guest-count-option.is-selected { background-color: var(--blue) !important; border-color: var(--blue) !important; color: var(--ink) !important; }
 .guest-count-option input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; opacity: 0; cursor: pointer; }
-.guest-count-option:focus-within { outline: 2px solid var(--cream); outline-offset: 3px; }
+.guest-count-option:focus-within { outline: 2px solid var(--blue); outline-offset: 3px; }
 .guest-count-option span { pointer-events: none; }
 #guest-fields { display: grid; gap: 32px; }
 .person-fields { margin: 0 !important; padding: 0 !important; }
 .person-fields > legend { width: 100%; margin: 0 0 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(245,240,232,.55); font-family: var(--serif); font-size: 32px; font-weight: 500; line-height: 1; letter-spacing: 0; text-transform: none; }
-.person-fields > label { display: block; margin-top: 16px; }
-.person-fields > input, .attendee-details input, .attendee-details textarea { width: 100%; }
+.person-fields > label { display: block; margin-top: 8px; margin-bottom: 2px; }
+.person-fields > input, .attendee-details input, .attendee-details textarea { width: 100%; margin: 0 0 10px; padding: 5px 0 7px; border: 0; border-bottom: 1px solid rgba(245,240,232,.7); border-radius: 0; background: transparent; }
+#rsvp-form .person-fields > input:focus, #rsvp-form .attendee-details input:focus, #rsvp-form .attendee-details textarea:focus { border-bottom: 2px solid var(--blue) !important; box-shadow: 0 1px 0 var(--blue); outline: none; }
 .attendance-field { margin-top: 24px !important; }
 .attendance-field > legend { margin-bottom: 10px; text-transform: none; letter-spacing: 0; font-size: 13px; }
 .attendance-options { display: flex; flex-wrap: wrap; gap: 18px; }
@@ -97,8 +98,8 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.
 .attendee-details { display: grid; gap: 8px; margin-top: 22px; }
 .attendee-details label { margin: 0; }
 .rsvp-people-form > label { margin-top: 28px; }
-.rsvp-form .button-light { background: var(--ink); color: var(--cream); }
-.rsvp-form .button-light:hover { background: #233628; }
+.rsvp-form .button-light { border-radius: 5px; background: var(--blue); color: var(--ink); }
+.rsvp-form .button-light:hover { background: #9fb6a1; }
 .rsvp-form button:disabled { cursor: wait; opacity: .65; }
 .form-honeypot { display: none; }
 .form-success.is-error { color: var(--cream); }
