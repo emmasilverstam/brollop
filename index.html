@@ -8,7 +8,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Dancing+Script:wght@500;600&family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="Brolopp.style.css?v=rsvp-style-v8">
+	<link rel="stylesheet" href="Brolopp.style.css?v=photo-gallery-v1">
 </head>
 <body>
 	<header class="site-header">
@@ -19,6 +19,7 @@
 			<a href="#info">Info</a>
 			<a href="#osa">OSA</a>
 			<a href="#om-oss">Om oss</a>
+			<a href="#bilder">Bilder</a>
 		</nav>
 		<button class="menu-toggle" type="button" aria-label="Öppna meny" aria-expanded="false" aria-controls="main-navigation">
 			<span></span><span></span><span></span>
@@ -128,7 +129,29 @@
 
 		<section class="about-section" id="om-oss"><div class="section-shell"><p class="eyebrow reveal">05 — Om oss</p><div class="about-head reveal"><h2>Två personer,<br><em>en historia.</em></h2><p>Vi träffades en regnig kväll på en bar i Göteborg. Sedan dess har vi hunnit med många resor, alldeles för många pastamiddagar och ett gemensamt beslut: att göra livet tillsammans.</p></div><div class="photo-grid reveal-stagger reveal-delay"><div class="photo photo-one"></div><div class="photo photo-two"></div><div class="photo-caption">Mer av oss, snart på riktigt.</div></div></div></section>
 
-		<section class="faq-section content-section section-shell"><div class="section-heading reveal"><p class="eyebrow">06 — FAQ</p><h2>Vanliga<br><em>frågor.</em></h2></div><div class="faq-list reveal-stagger"><details><summary>Vad händer om det regnar?</summary><p>Allt är planerat för både sol och regn. Vigseln flyttar in under tak vid behov.</p></details><details><summary>Kan jag ta med en +1?</summary><p>Din inbjudan anger vilka som är bjudna. Hör gärna av dig om du är osäker.</p></details><details><summary>Vem kontaktar jag under dagen?</summary><p>Vår toastmaster hjälper gärna till med praktiska frågor. Kontaktuppgifter kommer närmare dagen.</p></details></div></section>
+		<section class="gallery-section content-section" id="bilder">
+			<div class="section-shell">
+				<div class="section-heading gallery-heading reveal">
+					<p class="eyebrow">06 — Bilder från kvällen</p>
+					<h2>Bilder från<br><em>kvällen.</em></h2>
+				</div>
+				<div class="photo-upload-panel reveal">
+					<form class="photo-upload-form" id="photo-upload-form">
+						<label for="photo-uploader-name">Ditt namn</label>
+						<input id="photo-uploader-name" name="uploaderName" type="text" maxlength="60" autocomplete="name" required>
+						<label for="photo-files">Lägg till bilder</label>
+						<input id="photo-files" name="photos" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple required>
+						<p class="photo-file-summary" id="photo-file-summary" aria-live="polite">Välj en eller flera bilder.</p>
+						<button class="button button-dark" type="submit">Ladda upp</button>
+						<p class="photo-upload-status" id="photo-upload-status" role="status" aria-live="polite"></p>
+					</form>
+				</div>
+				<p class="photo-gallery-status" id="photo-gallery-status" role="status" aria-live="polite">Laddar bilder...</p>
+				<div class="photo-gallery" id="photo-gallery"></div>
+			</div>
+		</section>
+
+		<section class="faq-section content-section section-shell"><div class="section-heading reveal"><p class="eyebrow">07 — FAQ</p><h2>Vanliga<br><em>frågor.</em></h2></div><div class="faq-list reveal-stagger"><details><summary>Vad händer om det regnar?</summary><p>Allt är planerat för både sol och regn. Vigseln flyttar in under tak vid behov.</p></details><details><summary>Kan jag ta med en +1?</summary><p>Din inbjudan anger vilka som är bjudna. Hör gärna av dig om du är osäker.</p></details><details><summary>Vem kontaktar jag under dagen?</summary><p>Vår toastmaster hjälper gärna till med praktiska frågor. Kontaktuppgifter kommer närmare dagen.</p></details></div></section>
 	</main>
 
 	<footer class="site-footer"><div class="section-shell footer-inner reveal"><div class="wordmark">G <span>&amp;</span> K</div><p>5 juni 2027 · Borlänge</p><a href="#top">Till toppen ↑</a></div></footer>
@@ -202,6 +225,130 @@
 				submitButton.disabled = false;
 			}
 		});
+
+		const photoStorageUrl = 'https://kvmlbxgizxypvloilbds.supabase.co';
+		const photoStorageKey = 'sb_publishable_eO_H6nG0e0HFOftHliznLQ_bObKbz-h';
+		const photoBucket = 'brollop';
+		const maxPhotoSize = 10 * 1024 * 1024;
+		const allowedPhotoTypes = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif']);
+		const photoUploadForm = document.getElementById('photo-upload-form');
+		const photoNameInput = document.getElementById('photo-uploader-name');
+		const photoFilesInput = document.getElementById('photo-files');
+		const photoFileSummary = document.getElementById('photo-file-summary');
+		const photoUploadStatus = document.getElementById('photo-upload-status');
+		const photoGalleryStatus = document.getElementById('photo-gallery-status');
+		const photoGallery = document.getElementById('photo-gallery');
+		const photoHeaders = { apikey: photoStorageKey };
+		const safePathPart = (value) => encodeURIComponent(value.trim().replace(/[\\/]/g, '-').replace(/--+/g, '-'));
+		const decodePathPart = (value) => {
+			try { return decodeURIComponent(value); } catch { return value; }
+		};
+		const photoContentType = (file) => {
+			if (allowedPhotoTypes.has(file.type)) return file.type;
+			const extension = file.name.split('.').pop().toLowerCase();
+			const byExtension = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', heic: 'image/heic', heif: 'image/heif' };
+			return byExtension[extension] || '';
+		};
+		const updatePhotoFileSummary = () => {
+			const files = [...photoFilesInput.files];
+			photoFileSummary.textContent = files.length ? `${files.length} ${files.length === 1 ? 'bild vald' : 'bilder valda'}` : 'Välj en eller flera bilder.';
+		};
+		const loadPhotoGallery = async () => {
+			photoGalleryStatus.textContent = 'Laddar bilder...';
+			try {
+				const response = await fetch(`${photoStorageUrl}/storage/v1/object/list/${photoBucket}`, {
+					method: 'POST',
+					headers: { ...photoHeaders, 'Content-Type': 'application/json' },
+					body: JSON.stringify({ prefix: '', limit: 100, offset: 0, sortBy: { column: 'created_at', order: 'desc' } })
+				});
+				const objects = await response.json();
+				if (!response.ok || !Array.isArray(objects)) throw new Error(objects.message || 'Bilderna kunde inte hämtas.');
+				const photos = objects.filter((object) => object.name && /\.(jpe?g|png|webp|heic|heif)$/i.test(object.name));
+				photoGallery.replaceChildren();
+				if (!photos.length) {
+					photoGalleryStatus.textContent = 'Inga bilder uppladdade ännu.';
+					return;
+				}
+				photoGalleryStatus.textContent = `${photos.length} bilder från kvällen`;
+				photos.forEach((photo) => {
+					const [, encodedGuestName, ...encodedFileNameParts] = photo.name.split('--');
+					const guestName = decodePathPart(encodedGuestName || 'Gäst');
+					const fileName = decodePathPart(encodedFileNameParts.join('--') || photo.name);
+					const imageUrl = `${photoStorageUrl}/storage/v1/object/public/${photoBucket}/${encodeURIComponent(photo.name)}`;
+					const card = document.createElement('article');
+					card.className = 'photo-card';
+					const image = document.createElement('img');
+					image.src = imageUrl;
+					image.alt = `Foto uppladdat av ${guestName}`;
+					image.loading = 'lazy';
+					image.addEventListener('error', () => {
+						const fallback = document.createElement('div');
+						fallback.className = 'photo-preview-message';
+						fallback.textContent = 'Förhandsvisningen stöds inte. Ladda ner bilden för att visa den.';
+						image.replaceWith(fallback);
+					});
+					const caption = document.createElement('div');
+					caption.className = 'photo-card-caption';
+					const name = document.createElement('p');
+					name.className = 'photo-card-name';
+					name.textContent = guestName;
+					const download = document.createElement('a');
+					download.className = 'photo-download';
+					download.href = `${imageUrl}?download=${encodeURIComponent(fileName)}`;
+					download.textContent = 'Ladda ner';
+					caption.append(name, download);
+					card.append(image, caption);
+					photoGallery.append(card);
+				});
+			} catch {
+				photoGallery.replaceChildren();
+				photoGalleryStatus.textContent = 'Bildgalleriet kunde inte laddas just nu. Försök igen senare.';
+			}
+		};
+		photoFilesInput.addEventListener('change', updatePhotoFileSummary);
+		photoUploadForm.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			const files = [...photoFilesInput.files];
+			const guestName = photoNameInput.value.trim();
+			const invalidFile = files.find((file) => !photoContentType(file) || file.size > maxPhotoSize);
+			if (invalidFile) {
+				photoUploadStatus.textContent = !photoContentType(invalidFile) ? 'Välj bilder i JPG-, PNG-, WebP- eller HEIC-format.' : 'Varje bild får vara högst 10 MB.';
+				photoUploadStatus.classList.add('is-error');
+				return;
+			}
+			const submitButton = photoUploadForm.querySelector('button[type="submit"]');
+			submitButton.disabled = true;
+			photoUploadStatus.classList.remove('is-error');
+			try {
+				for (let index = 0; index < files.length; index += 1) {
+					const file = files[index];
+					const guestPart = safePathPart(guestName);
+					const filePart = safePathPart(file.name);
+					const uniquePart = window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+					const objectName = `${Date.now()}-${uniquePart}--${guestPart}--${filePart}`;
+					photoUploadStatus.textContent = `Laddar upp bild ${index + 1} av ${files.length}...`;
+					const response = await fetch(`${photoStorageUrl}/storage/v1/object/${photoBucket}/${encodeURIComponent(objectName)}`, {
+						method: 'POST',
+						headers: { ...photoHeaders, 'Content-Type': photoContentType(file), 'x-upsert': 'false' },
+						body: file
+					});
+					if (!response.ok) {
+						const result = await response.json().catch(() => ({}));
+						throw new Error(result.message || 'En bild kunde inte laddas upp.');
+					}
+				}
+				photoUploadStatus.textContent = `Tack ${guestName}, dina bilder är uppladdade!`;
+				photoUploadForm.reset();
+				updatePhotoFileSummary();
+			} catch (error) {
+				photoUploadStatus.textContent = error.message || 'Bilderna kunde inte laddas upp. Försök igen.';
+				photoUploadStatus.classList.add('is-error');
+			} finally {
+				submitButton.disabled = false;
+				await loadPhotoGallery();
+			}
+		});
+		loadPhotoGallery();
 		const revealItems = document.querySelectorAll('.reveal, .reveal-stagger');
 		const revealObserver = new IntersectionObserver((entries, observer) => {
 			entries.forEach((entry) => {
