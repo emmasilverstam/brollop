@@ -8,7 +8,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Dancing+Script:wght@500;600&family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="Brolopp.style.css?v=photo-gallery-v3">
+	<link rel="stylesheet" href="Brolopp.style.css?v=photo-gallery-v5">
 </head>
 <body>
 	<header class="site-header">
@@ -42,7 +42,7 @@
 
 		<section class="countdown-band reveal" aria-label="Nedräkning till bröllopet">
 			<div class="section-shell countdown-inner">
-				<p class="eyebrow">Vi räknar ner</p>
+				<p class="eyebrow">Nedräkning</p>
 				<div class="countdown" id="countdown">
 					<div><strong id="days">--</strong><span>dagar</span></div><b>:</b>
 					<div><strong id="hours">--</strong><span>timmar</span></div><b>:</b>
@@ -141,10 +141,19 @@
 						<input id="photo-uploader-name" name="uploaderName" type="text" maxlength="60" autocomplete="name" required>
 						<label for="photo-files">Lägg till bilder</label>
 						<input id="photo-files" name="photos" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple required>
+						<p>Välj högst 8 bilder, 10 MB per bild och sammanlagt 50 MB.</p>
 						<p class="photo-file-summary" id="photo-file-summary" aria-live="polite">Välj en eller flera bilder.</p>
 						<button class="button button-dark" type="submit">Ladda upp</button>
 						<p class="photo-upload-status" id="photo-upload-status" role="status" aria-live="polite"></p>
 					</form>
+				</div>
+				<div class="photo-delete-prompt" id="photo-delete-prompt" hidden>
+					<p id="photo-delete-prompt-text"></p>
+					<div class="photo-delete-prompt-actions">
+						<button class="button button-light" id="confirm-photo-delete" type="button">Ta bort bilden</button>
+						<button class="button button-dark" id="cancel-photo-delete" type="button">Avbryt</button>
+					</div>
+					<p class="photo-upload-status" id="photo-delete-status" role="status" aria-live="polite"></p>
 				</div>
 				<p class="photo-gallery-status" id="photo-gallery-status" role="status" aria-live="polite">Laddar bilder...</p>
 				<div class="photo-gallery" id="photo-gallery"></div>
@@ -229,6 +238,7 @@
 		const photoStorageUrl = 'https://kvmlbxgizxypvloilbds.supabase.co';
 		const photoStorageKey = 'sb_publishable_eO_H6nG0e0HFOftHliznLQ_bObKbz-h';
 		const photoBucket = 'kvallens-bilder';
+		const photoManageUrl = `${photoStorageUrl}/functions/v1/manage-photos`;
 		const maxPhotoSize = 10 * 1024 * 1024;
 		const allowedPhotoTypes = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif']);
 		const photoUploadForm = document.getElementById('photo-upload-form');
@@ -238,8 +248,59 @@
 		const photoUploadStatus = document.getElementById('photo-upload-status');
 		const photoGalleryStatus = document.getElementById('photo-gallery-status');
 		const photoGallery = document.getElementById('photo-gallery');
+		const photoDeleteTokensKey = 'brolopp-photo-delete-tokens-v1';
+		const photoDeletePrompt = document.getElementById('photo-delete-prompt');
+		const photoDeletePromptText = document.getElementById('photo-delete-prompt-text');
+		const photoDeleteStatus = document.getElementById('photo-delete-status');
 		const photoHeaders = { apikey: photoStorageKey };
-		const safePathPart = (value) => value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').trim().replace(/[\\/]/g, '-').replace(/[^A-Za-z0-9._-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 100) || 'bild';
+		let photoSupabaseClientPromise;
+		const getPhotoSupabaseClient = () => {
+			if (!photoSupabaseClientPromise) {
+				photoSupabaseClientPromise = import('https://esm.sh/@supabase/supabase-js@2')
+					.then(({ createClient }) => createClient(photoStorageUrl, photoStorageKey));
+			}
+			return photoSupabaseClientPromise;
+		};
+		const getPhotoAccessToken = async () => {
+			const supabase = await getPhotoSupabaseClient();
+			const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+			if (sessionError) throw sessionError;
+			if (sessionData.session) return { supabase, accessToken: sessionData.session.access_token };
+			const { data, error } = await supabase.auth.signInAnonymously();
+			if (error || !data.session) throw new Error('Aktivera Anonymous sign-ins i Supabase innan bilder kan laddas upp eller tas bort.');
+			return { supabase, accessToken: data.session.access_token };
+		};
+		let photoDeleteTokens = {};
+		try {
+			const storedTokens = JSON.parse(localStorage.getItem(photoDeleteTokensKey) || '{}');
+			if (storedTokens && typeof storedTokens === 'object' && !Array.isArray(storedTokens)) photoDeleteTokens = storedTokens;
+		} catch { photoDeleteTokens = {}; }
+		const savePhotoDeleteTokens = () => {
+			try { localStorage.setItem(photoDeleteTokensKey, JSON.stringify(photoDeleteTokens)); return true; } catch { return false; }
+		};
+		const encodePrivateDeletePayload = (payload) => btoa(JSON.stringify(payload)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+		const makePrivateDeleteLink = (path, token) => `${location.origin}${location.pathname}${location.search}#ta-bort=${encodePrivateDeletePayload({ path, token })}`;
+		const readPrivateDeleteRequest = () => {
+			const payload = new URLSearchParams(location.hash.slice(1)).get('ta-bort');
+			if (!payload) return null;
+			try {
+				const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+				const decoded = JSON.parse(atob(base64 + '='.repeat((4 - base64.length % 4) % 4)));
+				return typeof decoded.path === 'string' && /^[a-f0-9]{64}$/.test(decoded.token) ? decoded : null;
+			} catch { return null; }
+		};
+		const deletePhoto = async (path, token) => {
+			const { accessToken } = await getPhotoAccessToken();
+			const response = await fetch(photoManageUrl, {
+				method: 'POST',
+				headers: { ...photoHeaders, Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+				body: JSON.stringify({ action: 'delete', path, token })
+			});
+			const result = await response.json();
+			if (!response.ok || result.success !== true) throw new Error(result.error || 'Bilden kunde inte tas bort.');
+			delete photoDeleteTokens[path];
+			savePhotoDeleteTokens();
+		};
 		const decodePathPart = (value) => {
 			try { return decodeURIComponent(value); } catch { return value; }
 		};
@@ -272,8 +333,9 @@
 				photoGalleryStatus.textContent = `${photos.length} bilder från kvällen`;
 				photos.forEach((photo) => {
 					const [, encodedGuestName, ...encodedFileNameParts] = photo.name.split('--');
-					const guestName = decodePathPart(encodedGuestName || 'Gäst');
-					const fileName = decodePathPart(encodedFileNameParts.join('--') || photo.name);
+					const guestName = photo.metadata?.guestName || decodePathPart(encodedGuestName || 'Gäst');
+					const fileName = photo.metadata?.fileName || decodePathPart(encodedFileNameParts.join('--') || photo.name);
+					const deleteToken = photoDeleteTokens[photo.name];
 					const imageUrl = `${photoStorageUrl}/storage/v1/object/public/${photoBucket}/${encodeURIComponent(photo.name)}`;
 					const card = document.createElement('article');
 					card.className = 'photo-card';
@@ -292,11 +354,47 @@
 					const name = document.createElement('p');
 					name.className = 'photo-card-name';
 					name.textContent = guestName;
+					const actions = document.createElement('div');
+					actions.className = 'photo-card-actions';
 					const download = document.createElement('a');
 					download.className = 'photo-download';
 					download.href = `${imageUrl}?download=${encodeURIComponent(fileName)}`;
 					download.textContent = 'Ladda ner';
-					caption.append(name, download);
+					actions.append(download);
+					if (deleteToken) {
+						const removeButton = document.createElement('button');
+						removeButton.className = 'photo-delete';
+						removeButton.type = 'button';
+						removeButton.textContent = 'Ta bort';
+						removeButton.addEventListener('click', async () => {
+							if (!window.confirm('Ta bort din bild? Det går inte att ångra.')) return;
+						removeButton.disabled = true;
+						try {
+							await deletePhoto(photo.name, deleteToken);
+							photoUploadStatus.textContent = 'Bilden är borttagen.';
+							await loadPhotoGallery();
+						} catch (error) {
+							photoUploadStatus.textContent = error.message || 'Bilden kunde inte tas bort.';
+							photoUploadStatus.classList.add('is-error');
+							removeButton.disabled = false;
+						}
+						});
+						const copyLinkButton = document.createElement('button');
+						copyLinkButton.className = 'photo-delete-link';
+						copyLinkButton.type = 'button';
+						copyLinkButton.textContent = 'Kopiera borttagningslänk';
+						copyLinkButton.addEventListener('click', async () => {
+							try {
+								await navigator.clipboard.writeText(makePrivateDeleteLink(photo.name, deleteToken));
+								photoUploadStatus.textContent = 'Privat borttagningslänk kopierad. Spara den säkert.';
+							} catch {
+								photoUploadStatus.textContent = 'Kunde inte kopiera länken i den här webbläsaren.';
+								photoUploadStatus.classList.add('is-error');
+							}
+						});
+						actions.append(removeButton, copyLinkButton);
+					}
+					caption.append(name, actions);
 					card.append(image, caption);
 					photoGallery.append(card);
 				});
@@ -305,11 +403,42 @@
 				photoGalleryStatus.textContent = 'Bildgalleriet kunde inte laddas just nu. Försök igen senare.';
 			}
 		};
+		const privateDeleteRequest = readPrivateDeleteRequest();
+		if (privateDeleteRequest) {
+			photoDeletePromptText.textContent = 'Den här privata länken kan ta bort en bild från galleriet.';
+			photoDeletePrompt.hidden = false;
+			document.getElementById('bilder').scrollIntoView({ behavior: 'smooth', block: 'start' });
+			document.getElementById('confirm-photo-delete').addEventListener('click', async (event) => {
+				const button = event.currentTarget;
+				button.disabled = true;
+				photoDeleteStatus.textContent = 'Tar bort bilden...';
+				try {
+					await deletePhoto(privateDeleteRequest.path, privateDeleteRequest.token);
+					photoDeleteStatus.textContent = 'Bilden är borttagen.';
+					photoDeletePrompt.hidden = true;
+					history.replaceState(null, '', `${location.pathname}${location.search}#bilder`);
+					await loadPhotoGallery();
+				} catch (error) {
+					photoDeleteStatus.textContent = error.message || 'Bilden kunde inte tas bort.';
+					button.disabled = false;
+				}
+			});
+			document.getElementById('cancel-photo-delete').addEventListener('click', () => {
+				photoDeletePrompt.hidden = true;
+				photoDeleteStatus.textContent = '';
+				history.replaceState(null, '', `${location.pathname}${location.search}#bilder`);
+			});
+		}
 		photoFilesInput.addEventListener('change', updatePhotoFileSummary);
 		photoUploadForm.addEventListener('submit', async (event) => {
 			event.preventDefault();
 			const files = [...photoFilesInput.files];
 			const guestName = photoNameInput.value.trim();
+			if (!guestName || files.length < 1 || files.length > 8 || files.reduce((total, file) => total + file.size, 0) > 50 * 1024 * 1024) {
+				photoUploadStatus.textContent = !guestName ? 'Skriv ditt namn.' : 'Välj 1–8 bilder, sammanlagt högst 50 MB.';
+				photoUploadStatus.classList.add('is-error');
+				return;
+			}
 			const invalidFile = files.find((file) => !photoContentType(file) || file.size > maxPhotoSize);
 			if (invalidFile) {
 				photoUploadStatus.textContent = !photoContentType(invalidFile) ? 'Välj bilder i JPG-, PNG-, WebP- eller HEIC-format.' : 'Varje bild får vara högst 10 MB.';
@@ -320,24 +449,18 @@
 			submitButton.disabled = true;
 			photoUploadStatus.classList.remove('is-error');
 			try {
-				for (let index = 0; index < files.length; index += 1) {
-					const file = files[index];
-					const guestPart = safePathPart(guestName);
-					const filePart = safePathPart(file.name);
-					const uniquePart = window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-					const objectName = `${Date.now()}-${uniquePart}--${guestPart}--${filePart}`;
-					photoUploadStatus.textContent = `Laddar upp bild ${index + 1} av ${files.length}...`;
-					const response = await fetch(`${photoStorageUrl}/storage/v1/object/${photoBucket}/${encodeURIComponent(objectName)}`, {
-						method: 'POST',
-						headers: { ...photoHeaders, 'Content-Type': photoContentType(file), 'x-upsert': 'false' },
-						body: file
-					});
-					if (!response.ok) {
-						const result = await response.json().catch(() => ({}));
-						throw new Error(result.message || 'En bild kunde inte laddas upp.');
-					}
-				}
-				photoUploadStatus.textContent = `Tack ${guestName}, dina bilder är uppladdade!`;
+				const formData = new FormData();
+				formData.append('uploaderName', guestName);
+				files.forEach((file) => formData.append('photos', file, file.name));
+				const { accessToken } = await getPhotoAccessToken();
+				const response = await fetch(photoManageUrl, { method: 'POST', headers: { ...photoHeaders, Authorization: `Bearer ${accessToken}` }, body: formData });
+				const result = await response.json();
+				if (!response.ok || result.success !== true || !Array.isArray(result.photos)) throw new Error(result.error || 'Bilderna kunde inte laddas upp.');
+				result.photos.forEach((photo) => { photoDeleteTokens[photo.path] = photo.deleteToken; });
+				const tokensSaved = savePhotoDeleteTokens();
+				photoUploadStatus.textContent = tokensSaved
+					? `Tack ${guestName}, dina bilder är uppladdade. Du kan ta bort dem här eller via en privat länk.`
+					: `Tack ${guestName}, dina bilder är uppladdade. Kopiera och spara borttagningslänkarna innan du lämnar sidan – webbläsaren kunde inte spara dem.`;
 				photoUploadForm.reset();
 				updatePhotoFileSummary();
 			} catch (error) {

@@ -125,7 +125,18 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.
 .photo-preview-message { display: grid; place-items: center; padding: 18px; color: var(--ink); font-size: 13px; text-align: center; }
 .photo-card-caption { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 2px 2px; }
 .photo-card-name { min-width: 0; margin: 0; font-size: 13px; overflow-wrap: anywhere; }
+.photo-card-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 8px 12px; }
 .photo-download { flex: 0 0 auto; border-bottom: 1px solid var(--line); font-size: 12px; }
+.photo-delete, .photo-delete-link { flex: 0 0 auto; padding: 0; border: 0; border-bottom: 1px solid transparent; background: transparent; color: #8e3e3e; font: 12px var(--sans); cursor: pointer; }
+.photo-delete-link { color: var(--ink); }
+.photo-delete:hover, .photo-delete-link:hover { border-bottom-color: currentColor; }
+.photo-delete:disabled { cursor: wait; opacity: .6; }
+.photo-delete-prompt[hidden] { display: none; }
+.photo-delete-prompt { max-width: 760px; margin: 0 auto 24px; padding: 20px; background: #fff; box-shadow: 0 12px 24px rgba(49,71,53,.1); }
+.photo-delete-prompt > p:first-child { margin: 0 0 14px; }
+.photo-delete-prompt-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.photo-delete-prompt-actions .button { border-radius: 5px; }
+.photo-delete-prompt .form-success { margin-top: 10px; }
 @media (max-width: 760px) {
 	.gallery-section { padding: 82px 0; }
 	.gallery-heading { margin-bottom: 34px; }
