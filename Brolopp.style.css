@@ -89,15 +89,16 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.
 .person-fields > legend { width: 100%; margin: 0 0 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(245,240,232,.55); font-family: var(--serif); font-size: 32px; font-weight: 500; line-height: 1; letter-spacing: 0; text-transform: none; }
 .person-fields > label { display: block; margin-top: 8px; margin-bottom: 2px; }
 .person-fields > input, .attendee-details input, .attendee-details textarea { width: 100%; margin: 0 0 10px; padding: 5px 0 7px; border: 0; border-bottom: 1px solid rgba(245,240,232,.7); border-radius: 0; background: transparent; }
-.attendee-details input, .attendee-details textarea { margin-bottom: 6px; }
+.attendee-details input, .attendee-details textarea { margin-bottom: 0; }
 #rsvp-form .person-fields > input:focus, #rsvp-form .attendee-details input:focus, #rsvp-form .attendee-details textarea:focus { border-bottom: 2px solid var(--blue) !important; box-shadow: 0 1px 0 var(--blue); outline: none; }
 .attendance-field { margin-top: 24px !important; }
 .attendance-field > legend { margin-bottom: 10px; text-transform: none; letter-spacing: 0; font-size: 13px; }
 .attendance-options { display: flex; flex-wrap: wrap; gap: 18px; }
 .attendance-options .choice { margin: 0 !important; }
 .attendance-options .choice input { width: 18px; height: 18px; padding: 0; margin: 0 8px 0 0; accent-color: var(--blue); }
-.attendee-details { display: grid; gap: 14px; margin-top: 28px; }
-.attendee-details label { margin: 0; }
+.attendee-details { display: grid; gap: 0; margin-top: 28px; }
+.attendee-details label { margin: 0 0 2px; }
+.attendee-details input:not(:last-child), .attendee-details textarea:not(:last-child) { margin-bottom: 18px; }
 .rsvp-people-form > label { margin-top: 28px; }
 .rsvp-form .button-light { border-radius: 5px; background: var(--blue); color: var(--ink); }
 .rsvp-form .button-light:hover { background: #9fb6a1; }
