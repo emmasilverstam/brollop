@@ -126,8 +126,8 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.
 .photo-upload-status.is-error { color: #8e3e3e; }
 .photo-gallery-status { margin-bottom: 18px; }
 .photo-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 18px; }
-.photo-card { min-width: 0; padding: 10px; border-radius: 16px; background: #fff; box-shadow: 0 10px 22px rgba(49,71,53,.1); }
-.photo-card img, .photo-preview-message { display: block; width: 100%; aspect-ratio: 1; border-radius: 10px; background: var(--cream); object-fit: contain; }
+.photo-card { min-width: 0; padding: 10px; border-radius: 4px; background: #fff; box-shadow: 0 10px 22px rgba(49,71,53,.1); }
+.photo-card img, .photo-preview-message { display: block; width: 100%; aspect-ratio: 1; border-radius: 2px; background: var(--cream); object-fit: contain; }
 .photo-preview-message { display: grid; place-items: center; padding: 18px; color: var(--ink); font-size: 13px; text-align: center; }
 .photo-card-caption { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 2px 2px; }
 .photo-card-name { min-width: 0; margin: 0; font-size: 13px; overflow-wrap: anywhere; }
