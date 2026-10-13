@@ -8,7 +8,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Dancing+Script:wght@500;600&family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="Brolopp.style.css?v=gallery-left-v2">
+	<link rel="stylesheet" href="Brolopp.style.css?v=gallery-dialog-v3">
 </head>
 <body>
 	<header class="site-header">
@@ -135,7 +135,9 @@
 					<p class="eyebrow">06 — Bilder från kvällen</p>
 					<h2>Bilder från<br><em>kvällen.</em></h2>
 				</div>
-				<div class="photo-upload-panel reveal">
+				<div class="photo-upload-actions reveal"><button class="button button-dark" id="open-photo-upload" type="button">Ladda upp bilder</button></div>
+				<dialog class="photo-upload-panel" id="photo-upload-dialog" aria-labelledby="photo-upload-title">
+					<div class="photo-upload-heading"><h3 id="photo-upload-title">Dela dina bilder</h3><button id="close-photo-upload" class="photo-upload-close" type="button" aria-label="Stäng uppladdning">×</button></div>
 					<form class="photo-upload-form" id="photo-upload-form">
 						<label for="photo-uploader-name">Ditt namn</label>
 						<input id="photo-uploader-name" name="uploaderName" type="text" maxlength="60" autocomplete="name" required>
@@ -146,7 +148,7 @@
 						<button class="button button-dark" type="submit">Ladda upp</button>
 						<p class="photo-upload-status" id="photo-upload-status" role="status" aria-live="polite"></p>
 					</form>
-				</div>
+				</dialog>
 				<div class="photo-delete-prompt" id="photo-delete-prompt" hidden>
 					<p id="photo-delete-prompt-text"></p>
 					<div class="photo-delete-prompt-actions">
@@ -242,6 +244,9 @@
 		const maxPhotoSize = 10 * 1024 * 1024;
 		const allowedPhotoTypes = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif']);
 		const photoUploadForm = document.getElementById('photo-upload-form');
+		const photoUploadDialog = document.getElementById('photo-upload-dialog');
+		document.getElementById('open-photo-upload').addEventListener('click', () => photoUploadDialog.showModal());
+		document.getElementById('close-photo-upload').addEventListener('click', () => photoUploadDialog.close());
 		const photoNameInput = document.getElementById('photo-uploader-name');
 		const photoFilesInput = document.getElementById('photo-files');
 		const photoFileSummary = document.getElementById('photo-file-summary');
@@ -353,7 +358,7 @@
 					caption.className = 'photo-card-caption';
 					const name = document.createElement('p');
 					name.className = 'photo-card-name';
-					name.textContent = guestName;
+					name.textContent = `Uppladdad av ${guestName}`;
 					const actions = document.createElement('div');
 					actions.className = 'photo-card-actions';
 					const download = document.createElement('a');
@@ -371,28 +376,14 @@
 						removeButton.disabled = true;
 						try {
 							await deletePhoto(photo.name, deleteToken);
-							photoUploadStatus.textContent = 'Bilden är borttagen.';
+							photoGalleryStatus.textContent = 'Bilden är borttagen.';
 							await loadPhotoGallery();
 						} catch (error) {
-							photoUploadStatus.textContent = error.message || 'Bilden kunde inte tas bort.';
-							photoUploadStatus.classList.add('is-error');
+							photoGalleryStatus.textContent = error.message || 'Bilden kunde inte tas bort.';
 							removeButton.disabled = false;
 						}
 						});
-						const copyLinkButton = document.createElement('button');
-						copyLinkButton.className = 'photo-delete-link';
-						copyLinkButton.type = 'button';
-						copyLinkButton.textContent = 'Kopiera borttagningslänk';
-						copyLinkButton.addEventListener('click', async () => {
-							try {
-								await navigator.clipboard.writeText(makePrivateDeleteLink(photo.name, deleteToken));
-								photoUploadStatus.textContent = 'Privat borttagningslänk kopierad. Spara den säkert.';
-							} catch {
-								photoUploadStatus.textContent = 'Kunde inte kopiera länken i den här webbläsaren.';
-								photoUploadStatus.classList.add('is-error');
-							}
-						});
-						actions.append(removeButton, copyLinkButton);
+						actions.append(removeButton);
 					}
 					caption.append(name, actions);
 					card.append(image, caption);
@@ -459,8 +450,8 @@
 				result.photos.forEach((photo) => { photoDeleteTokens[photo.path] = photo.deleteToken; });
 				const tokensSaved = savePhotoDeleteTokens();
 				photoUploadStatus.textContent = tokensSaved
-					? `Tack ${guestName}, dina bilder är uppladdade. Du kan ta bort dem här eller via en privat länk.`
-					: `Tack ${guestName}, dina bilder är uppladdade. Kopiera och spara borttagningslänkarna innan du lämnar sidan – webbläsaren kunde inte spara dem.`;
+					? `Tack ${guestName}, dina bilder är uppladdade. Du kan ta bort dem i den här webbläsaren.`
+					: `Tack ${guestName}, dina bilder är uppladdade. Webbläsaren kunde inte spara möjligheten att ta bort dem nästa gång.`;
 				photoUploadForm.reset();
 				updatePhotoFileSummary();
 			} catch (error) {
