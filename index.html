@@ -8,7 +8,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Dancing+Script:wght@500;600&family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="Brolopp.style.css?v=gallery-inputs-v5">
+	<link rel="stylesheet" href="Brolopp.style.css?v=gallery-upload-v7">
 </head>
 <body>
 	<header class="site-header">
@@ -136,6 +136,7 @@
 					<h2>Bilder från<br><em>kvällen.</em></h2>
 				</div>
 				<div class="photo-upload-actions reveal"><button class="button button-dark" id="open-photo-upload" type="button">Ladda upp bilder</button></div>
+				<p class="photo-upload-result" id="photo-upload-result" role="status" aria-live="polite"></p>
 				<dialog class="photo-upload-panel" id="photo-upload-dialog" aria-labelledby="photo-upload-title">
 					<div class="photo-upload-heading"><h3 id="photo-upload-title">Dela dina bilder</h3><button id="close-photo-upload" class="photo-upload-close" type="button" aria-label="Stäng uppladdning">×</button></div>
 					<form class="photo-upload-form" id="photo-upload-form">
@@ -245,7 +246,11 @@
 		const allowedPhotoTypes = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif']);
 		const photoUploadForm = document.getElementById('photo-upload-form');
 		const photoUploadDialog = document.getElementById('photo-upload-dialog');
-		document.getElementById('open-photo-upload').addEventListener('click', () => photoUploadDialog.showModal());
+		document.getElementById('open-photo-upload').addEventListener('click', () => {
+			document.getElementById('photo-upload-status').textContent = '';
+			document.getElementById('photo-upload-status').classList.remove('is-error');
+			photoUploadDialog.showModal();
+		});
 		document.getElementById('close-photo-upload').addEventListener('click', () => photoUploadDialog.close());
 		const photoNameInput = document.getElementById('photo-uploader-name');
 		const photoFilesInput = document.getElementById('photo-files');
@@ -454,6 +459,8 @@
 					: `Tack ${guestName}, dina bilder är uppladdade. Webbläsaren kunde inte spara möjligheten att ta bort dem nästa gång.`;
 				photoUploadForm.reset();
 				updatePhotoFileSummary();
+				document.getElementById('photo-upload-result').textContent = photoUploadStatus.textContent;
+				photoUploadDialog.close();
 			} catch (error) {
 				photoUploadStatus.textContent = error.message || 'Bilderna kunde inte laddas upp. Försök igen.';
 				photoUploadStatus.classList.add('is-error');
