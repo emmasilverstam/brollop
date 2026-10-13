@@ -117,8 +117,8 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.
 .photo-upload-close { width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--cream); color: var(--ink); font-size: 28px; cursor: pointer; }
 .photo-upload-form { display: grid; gap: 10px; padding: 30px; }
 .photo-upload-form label { margin: 0; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
-.photo-upload-form input[type="text"] { width: 100%; margin: 0 0 8px; padding: 10px 12px; border: 0; border-bottom: 1px solid var(--line); background: var(--cream); color: var(--ink); font: 16px var(--sans); }
-.photo-upload-form input[type="file"] { width: 100%; margin: 0; padding: 12px; border: 1px solid var(--line); background: var(--cream); color: var(--ink); font: 14px var(--sans); }
+.photo-upload-form input[type="text"] { width: 100%; margin: 0 0 8px; padding: 10px 12px; border: 0; border-bottom: 1px solid var(--line); border-radius: 10px; background: var(--cream); color: var(--ink); font: 16px var(--sans); }
+.photo-upload-form input[type="file"] { width: 100%; margin: 0; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--cream); color: var(--ink); font: 14px var(--sans); }
 .photo-file-summary, .photo-upload-status, .photo-gallery-status { margin: 0; font-size: 13px; }
 .photo-file-summary { opacity: .7; }
 .photo-upload-form .button { justify-self: center; min-width: 190px; margin-top: 10px; border-radius: 5px; }
