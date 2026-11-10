@@ -191,7 +191,7 @@ h2 em { font-style: normal; }
 .hero-amp-mobile { display: none; }
 @media (max-width: 760px) { .hero-amp-desktop { display: none; } .hero-amp-mobile { display: inline; } }
 
-.hero-date > span:only-child { font-family: 'Playfair Display', Georgia, serif; font-style: normal; font-size: clamp(16px, 4.5vw, 22px); font-weight: 500; letter-spacing: .04em; }
+.hero-date > span:only-child { font-family: var(--sans); font-style: normal; font-size: clamp(16px, 4.5vw, 22px); font-weight: 500; letter-spacing: .04em; }
 
 @media (min-width: 761px) {
  .hero h1 .hero-name-line { display: block; }
