@@ -253,4 +253,6 @@ h2 em { font-style: normal; }
 .about-section { background: var(--cream); }
 .gallery-section { background: var(--blue); }
 
-.memory-slide img.photo { display: block; height: auto; object-fit: contain; background: white; }
+.memory-slide img.photo { display: block; height: auto; object-fit: cover; object-position: center; background: white; }
+
+.memory-slide img[src*='karusell-19'] { object-position: center 30%; }
