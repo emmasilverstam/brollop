@@ -184,3 +184,6 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.
 h2 em { font-style: normal; }
 
 .wordmark { font-family: 'Playfair Display', Georgia, serif; }
+
+.hero-name-line { white-space: nowrap; }
+@media (max-width: 760px) { .hero h1 { font-size: clamp(44px, 15vw, 96px); } }
