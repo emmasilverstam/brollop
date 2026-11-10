@@ -1,4 +1,4 @@
-:root { --ink: #314735; --cream: #edf1e8; --sand: #dbe5d7; --coral: #8E82A8; --blue: #AFC1B0; --line: rgba(49,71,53,.25); --serif: 'Playfair Display', Georgia, serif; --sans: 'DM Sans', sans-serif; }
+:root { --ink: #314735; --cream: #edf1e8; --sand: #dbe5d7; --coral: #8E82A8; --blue: #AFC1B0; --line: rgba(49,71,53,.25); --serif: 'Barlow Condensed', 'Arial Narrow', sans-serif; --sans: 'DM Sans', sans-serif; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--cream); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.55; }
@@ -179,3 +179,6 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.
  .image-note { position: static; height: auto; min-height: 64px; padding: 16px 6px; }
  .image-note-text { font-size: clamp(16px, 4.2vw, 22px); line-height: 1.35; white-space: normal; overflow-wrap: break-word; }
 }
+/* Keep the original ampersand while using condensed display type. */
+.hero h1 i { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-style: italic; }
+h2 em { font-style: normal; }
