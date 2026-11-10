@@ -222,3 +222,12 @@ h2 em { font-style: normal; }
  .memory-slide .photo { aspect-ratio: 3 / 4; border-width: 7px; }
 }
 @media (prefers-reduced-motion: reduce) { .memory-slide { transition: none; } }
+/* Let the carousel reach the page edges while keeping the active image prominent. */
+.memory-carousel { width: 100vw; margin-left: calc((100% - 100vw) / 2); }
+.memory-slide .photo { transform: scale(.84); transition: transform .3s ease; }
+.memory-slide.is-current .photo { transform: scale(1); }
+@media (max-width: 760px) {
+ .memory-carousel { width: 100vw; margin-left: calc((100% - 100vw) / 2); }
+ .memory-track { gap: 8px; padding-inline: 17%; }
+}
+@media (prefers-reduced-motion: reduce) { .memory-slide .photo { transition: none; } }
