@@ -316,6 +316,7 @@
 			if (!response.ok || result.success !== true) throw new Error(result.error || 'Bilden kunde inte tas bort.');
 			delete photoDeleteTokens[path];
 			savePhotoDeleteTokens();
+			document.getElementById('photo-upload-result').textContent = 'Din bild är nu borttagen.';
 		};
 		const decodePathPart = (value) => {
 			try { return decodeURIComponent(value); } catch { return value; }
@@ -387,7 +388,7 @@
 						removeButton.disabled = true;
 						try {
 							await deletePhoto(photo.name, deleteToken);
-							photoGalleryStatus.textContent = 'Bilden är borttagen.';
+							photoGalleryStatus.textContent = 'Din bild är nu borttagen.';
 							await loadPhotoGallery();
 						} catch (error) {
 							photoGalleryStatus.textContent = error.message || 'Bilden kunde inte tas bort.';
@@ -416,7 +417,7 @@
 				photoDeleteStatus.textContent = 'Tar bort bilden...';
 				try {
 					await deletePhoto(privateDeleteRequest.path, privateDeleteRequest.token);
-					photoDeleteStatus.textContent = 'Bilden är borttagen.';
+					photoDeleteStatus.textContent = 'Din bild är nu borttagen.';
 					photoDeletePrompt.hidden = true;
 					history.replaceState(null, '', `${location.pathname}${location.search}#bilder`);
 					await loadPhotoGallery();
