@@ -350,7 +350,7 @@
 				photoGalleryStatus.textContent = `${photos.length} bilder från kvällen`;
 				photos.forEach((photo) => {
 					const [, encodedGuestName, ...encodedFileNameParts] = photo.name.split('--');
-					const guestName = photo.metadata?.guestName || decodePathPart(encodedGuestName || 'Gäst');
+					const guestName = photo.metadata?.guestName || decodePathPart(encodedGuestName || 'Gäst').replace(/-/g, ' ');
 					const fileName = photo.metadata?.fileName || decodePathPart(encodedFileNameParts.join('--') || photo.name);
 					const deleteToken = photoDeleteTokens[photo.name];
 					const imageUrl = `${photoStorageUrl}/storage/v1/object/public/${photoBucket}/${encodeURIComponent(photo.name)}`;
