@@ -8,7 +8,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Caveat:wght@500;600&family=Dancing+Script:wght@500;600&family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="Brolopp.style.css?v=memory-carousel-sized-v23">
+	<link rel="stylesheet" href="Brolopp.style.css?v=memory-carousel-loop-v24">
 </head>
 <body>
 	<header class="site-header">
@@ -537,11 +537,25 @@
 		mainNavigation.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenuState(false)));
 		document.addEventListener('keydown', (event) => { if (event.key === 'Escape') setMenuState(false); });
         const memoryTrack = document.getElementById('memory-track');
+        const originalMemorySlides = [...memoryTrack.children].filter((slide) => !slide.hasAttribute('data-clone'));
+        const memoryCount = originalMemorySlides.length;
+        const cloneMemorySlide = (slide) => {
+            const clone = slide.cloneNode(true);
+            clone.setAttribute('data-clone', '');
+            clone.setAttribute('aria-hidden', 'true');
+            return clone;
+        };
+        memoryTrack.replaceChildren(
+            ...originalMemorySlides.map(cloneMemorySlide),
+            ...originalMemorySlides,
+            ...originalMemorySlides.map(cloneMemorySlide)
+        );
         const memorySlides = [...memoryTrack.children];
         const reducedMemoryMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-        let memoryIndex = 1;
+        let memoryIndex = memoryCount;
         let memorySettleTimer;
         let memoryFrame;
+        let memoryResetting = false;
         const memoryLeft = (index) => memorySlides[index].offsetLeft - (memoryTrack.clientWidth - memorySlides[index].offsetWidth) / 2;
         const paintMemory = () => {
             memoryIndex = memorySlides.reduce((nearest, slide, index) =>
@@ -552,17 +566,33 @@
             memoryTrack.scrollTo({ left: memoryLeft(index), behavior: smooth && !reducedMemoryMotion.matches ? 'smooth' : 'instant' });
         };
         const settleMemory = () => {
+            if (memoryResetting) return;
             paintMemory();
-            if (memoryIndex === 0) moveMemory(2, false);
-            if (memoryIndex === 3) moveMemory(1, false);
+            const normalized = memoryCount + ((memoryIndex % memoryCount) + memoryCount) % memoryCount;
+            if (normalized === memoryIndex) return;
+            // Switch between identical copies without animating the invisible reset.
+            memoryResetting = true;
+            memoryTrack.classList.add('is-resetting');
+            moveMemory(normalized, false);
+            paintMemory();
+            // Commit the matching active styles before restoring transitions.
+            void memoryTrack.offsetWidth;
+            memoryTrack.classList.remove('is-resetting');
+            memoryResetting = false;
         };
         memoryTrack.addEventListener('scroll', () => {
+            if (memoryResetting) return;
             cancelAnimationFrame(memoryFrame);
             memoryFrame = requestAnimationFrame(paintMemory);
             clearTimeout(memorySettleTimer);
             memorySettleTimer = setTimeout(settleMemory, 180);
         }, { passive: true });
-        const stepMemory = (direction) => moveMemory(Math.max(0, Math.min(3, memoryIndex + direction)));
+        memoryTrack.addEventListener('scrollend', settleMemory);
+        const stepMemory = (direction) => {
+            if (memoryResetting) return;
+            paintMemory();
+            moveMemory(Math.max(0, Math.min(memorySlides.length - 1, memoryIndex + direction)));
+        };
         document.getElementById('memory-prev').addEventListener('click', () => stepMemory(-1));
         document.getElementById('memory-next').addEventListener('click', () => stepMemory(1));
         memoryTrack.addEventListener('keydown', (event) => {
@@ -571,7 +601,7 @@
             stepMemory(event.key === 'ArrowLeft' ? -1 : 1);
         });
         new ResizeObserver(() => moveMemory(memoryIndex, false)).observe(memoryTrack);
-        moveMemory(1, false);
+        moveMemory(memoryCount, false);
         paintMemory();
 	</script>
 </body>

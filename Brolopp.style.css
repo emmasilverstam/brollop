@@ -235,3 +235,4 @@ h2 em { font-style: normal; }
 .memory-track { padding-inline: calc((100% - var(--memory-slide-width)) / 2); }
 .memory-slide { flex-basis: var(--memory-slide-width); }
 @media (max-width: 760px) { .memory-carousel { --memory-slide-width: min(70vw, 360px); } }
+.memory-track.is-resetting .memory-slide, .memory-track.is-resetting .photo { transition: none; }
