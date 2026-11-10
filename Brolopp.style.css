@@ -182,3 +182,5 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.
 /* Keep the original ampersand while using condensed display type. */
 .hero h1 i { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-style: italic; }
 h2 em { font-style: normal; }
+
+.wordmark { font-family: 'Playfair Display', Georgia, serif; }
