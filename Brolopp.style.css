@@ -251,7 +251,7 @@ h2 em { font-style: normal; }
 .memory-track.is-dragging .photo { cursor: grabbing; }
 
 .about-section { background: var(--cream); }
-.gallery-section { background: var(--blue); }
+.gallery-section { background: var(--sand); }
 
 .memory-slide img.photo { display: block; height: auto; object-fit: cover; object-position: center; background: white; }
 
