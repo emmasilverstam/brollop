@@ -258,3 +258,5 @@ h2 em { font-style: normal; }
 .memory-slide img[src*='karusell-19'] { object-position: center 30%; }
 
 @media (max-width: 760px) { .memory-controls { display: none; } }
+
+@media (max-width: 760px) { .memory-slide img[src*='karusell-17'] { object-position: 22% center; } }
