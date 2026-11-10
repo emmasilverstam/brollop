@@ -186,4 +186,4 @@ h2 em { font-style: normal; }
 .wordmark { font-family: 'Playfair Display', Georgia, serif; }
 
 .hero-name-line { white-space: nowrap; }
-@media (max-width: 760px) { .hero h1 { font-size: clamp(44px, 15vw, 96px); } }
+@media (max-width: 760px) { .hero h1 { font-size: clamp(48px, 18vw, 112px); } }
