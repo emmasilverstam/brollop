@@ -204,3 +204,21 @@ h2 em { font-style: normal; }
 .countdown strong { font-family: 'Playfair Display', Georgia, serif; }
 
 .timeline a { border-bottom-color: currentColor; }
+
+.memory-carousel { margin-top: 60px; }
+.memory-track { position: relative; display: flex; gap: 24px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 12px 20% 20px; }
+.memory-track::-webkit-scrollbar { display: none; }
+.memory-slide { flex: 0 0 100%; min-width: 0; scroll-snap-align: center; opacity: .35; transition: opacity .25s ease; }
+.memory-slide.is-current { opacity: 1; }
+.memory-slide .photo { width: 100%; aspect-ratio: 4 / 3; background-position: center; border: 10px solid white; box-shadow: 0 8px 20px rgba(49,71,53,.12); }
+.memory-controls { display: flex; align-items: center; justify-content: center; gap: 24px; margin-top: 12px; }
+.memory-controls p { margin: 0; font-size: 14px; font-variant-numeric: tabular-nums; }
+.memory-arrow { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--ink); border-radius: 50%; background: transparent; color: var(--ink); font: 24px var(--sans); cursor: pointer; }
+.memory-arrow:hover { background: var(--cream); }
+.memory-arrow:focus-visible, .memory-track:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+@media (max-width: 760px) {
+ .memory-carousel { width: calc(100vw - 16px); margin-left: calc((100% - 100vw + 16px) / 2); margin-top: 36px; }
+ .memory-track { gap: 14px; padding-inline: 14%; }
+ .memory-slide .photo { aspect-ratio: 3 / 4; border-width: 7px; }
+}
+@media (prefers-reduced-motion: reduce) { .memory-slide { transition: none; } }

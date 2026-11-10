@@ -8,7 +8,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Caveat:wght@500;600&family=Dancing+Script:wght@500;600&family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="Brolopp.style.css?v=timeline-link-purple-v20">
+	<link rel="stylesheet" href="Brolopp.style.css?v=memory-carousel-v21">
 </head>
 <body>
 	<header class="site-header">
@@ -124,7 +124,19 @@
 			</div>
 		</section>
 
-		<section class="about-section" id="om-oss"><div class="section-shell"><p class="eyebrow reveal">05 — Om oss</p><div class="about-head reveal"><h2>Bilder från<br><em>våra år ihop.</em></h2><p>Vi träffades en regnig kväll på en bar i Göteborg. Sedan dess har vi hunnit med många resor, alldeles för många pastamiddagar och ett gemensamt beslut: att göra livet tillsammans.</p></div><div class="photo-grid reveal-stagger reveal-delay"><div class="photo photo-one"></div><div class="photo photo-two"></div></div></div></section>
+		<section class="about-section" id="om-oss"><div class="section-shell"><p class="eyebrow reveal">05 — Om oss</p><div class="about-head reveal"><h2>Bilder från<br><em>våra år ihop.</em></h2><p>Vi träffades en regnig kväll på en bar i Göteborg. Sedan dess har vi hunnit med många resor, alldeles för många pastamiddagar och ett gemensamt beslut: att göra livet tillsammans.</p></div><div class="memory-carousel" role="region" aria-roledescription="karusell" aria-label="Bilder från våra år ihop">
+ <div class="memory-track" id="memory-track" tabindex="0" aria-label="Svep eller använd piltangenterna för att byta bild">
+  <div class="memory-slide" data-clone aria-hidden="true"><div class="photo photo-two"></div></div>
+  <div class="memory-slide"><div class="photo photo-one" role="img" aria-label="Bild 1 från våra år ihop"></div></div>
+  <div class="memory-slide"><div class="photo photo-two" role="img" aria-label="Bild 2 från våra år ihop"></div></div>
+  <div class="memory-slide" data-clone aria-hidden="true"><div class="photo photo-one"></div></div>
+ </div>
+ <div class="memory-controls">
+  <button class="memory-arrow" id="memory-prev" type="button" aria-label="Föregående bild" aria-controls="memory-track">←</button>
+  <p id="memory-status" aria-live="polite" aria-atomic="true">1 / 2</p>
+  <button class="memory-arrow" id="memory-next" type="button" aria-label="Nästa bild" aria-controls="memory-track">→</button>
+ </div>
+</div></div></section>
 
 		<section class="gallery-section content-section" id="bilder">
 			<div class="section-shell">
@@ -525,6 +537,46 @@
 		menuToggle.addEventListener('click', () => setMenuState(!mainNavigation.classList.contains('is-open')));
 		mainNavigation.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenuState(false)));
 		document.addEventListener('keydown', (event) => { if (event.key === 'Escape') setMenuState(false); });
+        const memoryTrack = document.getElementById('memory-track');
+        const memorySlides = [...memoryTrack.children];
+        const memoryStatus = document.getElementById('memory-status');
+        const reducedMemoryMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let memoryIndex = 1;
+        let memorySettleTimer;
+        let memoryFrame;
+        const memoryLeft = (index) => memorySlides[index].offsetLeft - (memoryTrack.clientWidth - memorySlides[index].offsetWidth) / 2;
+        const paintMemory = () => {
+            memoryIndex = memorySlides.reduce((nearest, slide, index) =>
+                Math.abs(memoryLeft(index) - memoryTrack.scrollLeft) < Math.abs(memoryLeft(nearest) - memoryTrack.scrollLeft) ? index : nearest, 0);
+            memorySlides.forEach((slide, index) => slide.classList.toggle('is-current', index === memoryIndex));
+        };
+        const moveMemory = (index, smooth = true) => {
+            memoryTrack.scrollTo({ left: memoryLeft(index), behavior: smooth && !reducedMemoryMotion.matches ? 'smooth' : 'instant' });
+        };
+        const settleMemory = () => {
+            paintMemory();
+            if (memoryIndex === 0) moveMemory(2, false);
+            if (memoryIndex === 3) moveMemory(1, false);
+            const realIndex = memoryIndex === 0 ? 2 : memoryIndex === 3 ? 1 : memoryIndex;
+            memoryStatus.textContent = `${realIndex} / 2`;
+        };
+        memoryTrack.addEventListener('scroll', () => {
+            cancelAnimationFrame(memoryFrame);
+            memoryFrame = requestAnimationFrame(paintMemory);
+            clearTimeout(memorySettleTimer);
+            memorySettleTimer = setTimeout(settleMemory, 180);
+        }, { passive: true });
+        const stepMemory = (direction) => moveMemory(Math.max(0, Math.min(3, memoryIndex + direction)));
+        document.getElementById('memory-prev').addEventListener('click', () => stepMemory(-1));
+        document.getElementById('memory-next').addEventListener('click', () => stepMemory(1));
+        memoryTrack.addEventListener('keydown', (event) => {
+            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+            event.preventDefault();
+            stepMemory(event.key === 'ArrowLeft' ? -1 : 1);
+        });
+        new ResizeObserver(() => moveMemory(memoryIndex, false)).observe(memoryTrack);
+        moveMemory(1, false);
+        paintMemory();
 	</script>
 </body>
 </html>
