@@ -202,3 +202,5 @@ h2 em { font-style: normal; }
 @media (max-width: 760px) { .hero-date > span:only-child { font-size: clamp(14px, 4vw, 18px); } }
 
 .countdown strong { font-family: 'Playfair Display', Georgia, serif; }
+
+.timeline a { border-bottom-color: currentColor; }
