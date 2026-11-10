@@ -198,3 +198,5 @@ h2 em { font-style: normal; }
  .hero h1 > br { display: none; }
  .hero h1 .hero-amp-desktop { display: block; }
 }
+
+@media (max-width: 760px) { .hero-date > span:only-child { font-size: clamp(14px, 4vw, 18px); } }
