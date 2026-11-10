@@ -260,3 +260,6 @@ h2 em { font-style: normal; }
 @media (max-width: 760px) { .memory-controls { display: none; } }
 
 @media (max-width: 760px) { .memory-slide img[src*='karusell-17'] { object-position: 22% center; } }
+
+a { text-decoration-color: var(--coral); }
+.text-link, .timeline a, .travel-grid a, .info-grid a, .photo-download, .main-nav.is-open a, .photo-delete:hover, .photo-delete-link:hover { border-bottom-color: var(--coral); }
