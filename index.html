@@ -8,7 +8,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Caveat:wght@500;600&family=Dancing+Script:wght@500;600&family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="Brolopp.style.css?v=carousel-arrows-bold-v26">
+	<link rel="stylesheet" href="Brolopp.style.css?v=carousel-mouse-drag-v27">
 </head>
 <body>
 	<header class="site-header">
@@ -556,6 +556,7 @@
         let memorySettleTimer;
         let memoryFrame;
         let memoryResetting = false;
+        let memoryDragging = false;
         const memoryLeft = (index) => memorySlides[index].offsetLeft - (memoryTrack.clientWidth - memorySlides[index].offsetWidth) / 2;
         const paintMemory = () => {
             memoryIndex = memorySlides.reduce((nearest, slide, index) =>
@@ -566,7 +567,7 @@
             memoryTrack.scrollTo({ left: memoryLeft(index), behavior: smooth && !reducedMemoryMotion.matches ? 'smooth' : 'instant' });
         };
         const settleMemory = () => {
-            if (memoryResetting) return;
+            if (memoryResetting || memoryDragging) return;
             paintMemory();
             const normalized = memoryCount + ((memoryIndex % memoryCount) + memoryCount) % memoryCount;
             if (normalized === memoryIndex) return;
@@ -581,7 +582,7 @@
             memoryResetting = false;
         };
         memoryTrack.addEventListener('scroll', () => {
-            if (memoryResetting) return;
+            if (memoryResetting || memoryDragging) return;
             cancelAnimationFrame(memoryFrame);
             memoryFrame = requestAnimationFrame(paintMemory);
             clearTimeout(memorySettleTimer);
@@ -589,7 +590,7 @@
         }, { passive: true });
         memoryTrack.addEventListener('scrollend', settleMemory);
         const stepMemory = (direction) => {
-            if (memoryResetting) return;
+            if (memoryResetting || memoryDragging) return;
             paintMemory();
             moveMemory(Math.max(0, Math.min(memorySlides.length - 1, memoryIndex + direction)));
         };
@@ -599,6 +600,50 @@
             if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
             event.preventDefault();
             stepMemory(event.key === 'ArrowLeft' ? -1 : 1);
+        });
+        let memoryPointer = null;
+        let memoryDragMoved = false;
+        memoryTrack.addEventListener('pointerdown', (event) => {
+            if (event.pointerType !== 'mouse' || event.button !== 0) return;
+            memoryDragMoved = false;
+            memoryPointer = { id: event.pointerId, x: event.clientX, left: memoryTrack.scrollLeft };
+            // Stop any pending smooth scroll before starting a mouse gesture.
+            memoryTrack.scrollTo({ left: memoryTrack.scrollLeft, behavior: 'instant' });
+        });
+        memoryTrack.addEventListener('pointermove', (event) => {
+            if (!memoryPointer || event.pointerId !== memoryPointer.id) return;
+            const distance = event.clientX - memoryPointer.x;
+            if (!memoryDragging && Math.abs(distance) < 5) return;
+            if (!memoryDragging) {
+                memoryDragging = true;
+                memoryDragMoved = true;
+                memoryTrack.classList.add('is-dragging');
+                memoryTrack.setPointerCapture(event.pointerId);
+            }
+            event.preventDefault();
+            memoryTrack.scrollLeft = memoryPointer.left - distance;
+        });
+        const finishMemoryDrag = (event) => {
+            if (!memoryPointer || event.pointerId !== memoryPointer.id) return;
+            memoryPointer = null;
+            if (!memoryDragging) return;
+            memoryDragging = false;
+            paintMemory();
+            memoryTrack.classList.remove('is-dragging');
+            if (memoryTrack.hasPointerCapture(event.pointerId)) memoryTrack.releasePointerCapture(event.pointerId);
+            moveMemory(memoryIndex);
+        };
+        window.addEventListener('pointerup', finishMemoryDrag);
+        memoryTrack.addEventListener('pointercancel', finishMemoryDrag);
+        memoryTrack.addEventListener('lostpointercapture', finishMemoryDrag);
+        memoryTrack.addEventListener('click', (event) => {
+            if (memoryDragMoved) {
+                event.preventDefault();
+                return;
+            }
+            const slide = event.target.closest('.memory-slide');
+            const index = memorySlides.indexOf(slide);
+            if (index >= 0 && index !== memoryIndex) moveMemory(index);
         });
         new ResizeObserver(() => moveMemory(memoryIndex, false)).observe(memoryTrack);
         moveMemory(memoryCount, false);

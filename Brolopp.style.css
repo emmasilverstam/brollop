@@ -245,3 +245,7 @@ h2 em { font-style: normal; }
 #memory-next:hover svg { transform: translateX(4px); }
 .memory-arrow:active svg { transform: scale(.92); }
 @media (prefers-reduced-motion: reduce) { .memory-arrow, .memory-arrow svg { transition: none; } }
+.memory-track { cursor: grab; user-select: none; }
+.memory-slide:not(.is-current) .photo { cursor: pointer; }
+.memory-track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+.memory-track.is-dragging .photo { cursor: grabbing; }
