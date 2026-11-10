@@ -256,3 +256,5 @@ h2 em { font-style: normal; }
 .memory-slide img.photo { display: block; height: auto; object-fit: cover; object-position: center; background: white; }
 
 .memory-slide img[src*='karusell-19'] { object-position: center 30%; }
+
+@media (max-width: 760px) { .memory-controls { display: none; } }
