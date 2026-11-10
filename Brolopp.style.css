@@ -231,3 +231,7 @@ h2 em { font-style: normal; }
  .memory-track { gap: 8px; padding-inline: 17%; }
 }
 @media (prefers-reduced-motion: reduce) { .memory-slide .photo { transition: none; } }
+.memory-carousel { --memory-slide-width: min(56vw, 600px); }
+.memory-track { padding-inline: calc((100% - var(--memory-slide-width)) / 2); }
+.memory-slide { flex-basis: var(--memory-slide-width); }
+@media (max-width: 760px) { .memory-carousel { --memory-slide-width: min(70vw, 360px); } }
