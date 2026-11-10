@@ -249,3 +249,6 @@ h2 em { font-style: normal; }
 .memory-slide:not(.is-current) .photo { cursor: pointer; }
 .memory-track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
 .memory-track.is-dragging .photo { cursor: grabbing; }
+
+.about-section { background: var(--cream); }
+.gallery-section { background: var(--blue); }
