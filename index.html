@@ -162,7 +162,6 @@
 
 	</main>
 
-	<footer class="site-footer"><div class="section-shell footer-inner reveal"><div class="wordmark">G <span>&amp;</span> K</div><p>5 juni 2027 · Borlänge</p><a href="#top">Till toppen ↑</a></div></footer>
 	<script>
 		const weddingDate = new Date('2027-06-05T14:30:00+02:00').getTime();
 		const countdown = () => { const distance = weddingDate - Date.now(); if (distance <= 0) { document.getElementById('countdown').innerHTML = '<p>Idag firar vi!</p>'; return; } const values = { days: Math.floor(distance / 86400000), hours: Math.floor(distance / 3600000) % 24, minutes: Math.floor(distance / 60000) % 60, seconds: Math.floor(distance / 1000) % 60 }; Object.entries(values).forEach(([key, value]) => { document.getElementById(key).textContent = String(value).padStart(2, '0'); }); };
