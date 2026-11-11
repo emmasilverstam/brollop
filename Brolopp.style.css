@@ -284,3 +284,5 @@ body:after { width: clamp(335px, 36vw, 495px); height: clamp(335px, 36vw, 495px)
 @media (max-width: 760px) { body:before { top: 63px; } body.has-scrolled:before { top: -11px; } body.header-visible:before { top: 63px; } }
 
 @media (max-width: 760px) { .info-grid h3 { margin-top: 0; } }
+
+@media (min-width: 761px) { .hero-date > span:only-child { font-size: 19px; } }
