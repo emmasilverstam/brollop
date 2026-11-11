@@ -290,11 +290,3 @@ body:after { width: clamp(335px, 36vw, 495px); height: clamp(335px, 36vw, 495px)
 @media (min-width: 761px) { .countdown-inner .countdown { margin-right: calc(2.75% + 45px); } }
 
 @media (max-width: 760px) { .countdown-band { margin-top: 16px; } }
-
-.info-scroll-active { width: 100%; padding: 0; }
-.info-scroll-active .info-pin { position: sticky; top: 0; min-height: 100svh; padding: 82px max(24px, calc((100vw - 560px) / 2)) 40px; display: flex; flex-direction: column; justify-content: center; }
-.info-scroll-active .info-window { overflow: hidden; margin-top: 36px; }
-.info-scroll-active .info-grid { display: flex; width: 100%; gap: 32px; margin: 0; will-change: transform; transition: none; opacity: 1; }
-.info-scroll-active .info-grid article { flex: 0 0 100%; min-width: 0; padding-top: 15px; border-top: 1px solid var(--line); background: none; border-radius: 0; opacity: 1; transform: none; transition: none; }
-.info-scroll-active .info-grid h3 { margin-top: 0; }
-.info-scroll-active .info-grid p { max-width: 370px; }
