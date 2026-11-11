@@ -286,3 +286,5 @@ body:after { width: clamp(335px, 36vw, 495px); height: clamp(335px, 36vw, 495px)
 @media (max-width: 760px) { .info-grid h3 { margin-top: 0; } }
 
 @media (min-width: 761px) { .hero-date > span:only-child { font-size: 19px; } }
+
+@media (min-width: 761px) { .countdown-inner .countdown { margin-right: calc(2.75% + 45px); } }
