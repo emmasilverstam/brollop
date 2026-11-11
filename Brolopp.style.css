@@ -289,11 +289,12 @@ body:after { width: clamp(335px, 36vw, 495px); height: clamp(335px, 36vw, 495px)
 
 @media (min-width: 761px) { .countdown-inner .countdown { margin-right: calc(2.75% + 45px); } }
 
-@media (max-width: 760px) {
- .countdown-band { margin-top: 16px; }
- .info-grid { display: flex; width: 100vw; margin-left: calc((100% - 100vw) / 2); margin-top: 36px; padding: 4px 24px 18px; gap: 16px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 24px; scrollbar-width: thin; scrollbar-color: var(--coral) transparent; }
- .info-grid article { flex: 0 0 min(80vw, 340px); min-width: 0; padding: 22px; background: var(--sand); border: 1px solid var(--line); border-radius: 8px; scroll-snap-align: start; }
- .info-grid h3 { margin-top: 0; }
- .info-grid p { max-width: none; }
- .info-grid:focus-visible { outline: 2px solid var(--coral); outline-offset: -4px; }
-}
+@media (max-width: 760px) { .countdown-band { margin-top: 16px; } }
+
+.info-scroll-active { width: 100%; padding: 0; }
+.info-scroll-active .info-pin { position: sticky; top: 0; min-height: 100svh; padding: 82px max(24px, calc((100vw - 560px) / 2)) 40px; display: flex; flex-direction: column; justify-content: center; }
+.info-scroll-active .info-window { overflow: hidden; margin-top: 36px; }
+.info-scroll-active .info-grid { display: flex; width: 100%; gap: 32px; margin: 0; will-change: transform; transition: none; opacity: 1; }
+.info-scroll-active .info-grid article { flex: 0 0 100%; min-width: 0; padding-top: 15px; border-top: 1px solid var(--line); background: none; border-radius: 0; opacity: 1; transform: none; transition: none; }
+.info-scroll-active .info-grid h3 { margin-top: 0; }
+.info-scroll-active .info-grid p { max-width: 370px; }
