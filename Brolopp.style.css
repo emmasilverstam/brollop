@@ -107,7 +107,7 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/blomma3.
 .gallery-section { padding-top: 100px; padding-bottom: 110px; }
 .gallery-heading { margin-bottom: 44px; text-align: left; }
 .photo-upload-actions { margin-bottom: 32px; text-align: center; }
-.photo-upload-actions .button { justify-content: center; border-radius: 14px; }
+.photo-upload-actions .button { justify-content: center; border-radius: 8px; }
 .photo-upload-panel { width: min(560px, calc(100% - 32px)); max-height: calc(100dvh - 48px); margin: auto; padding: 0; border: 0; border-radius: 24px; background: var(--sand); color: var(--ink); box-shadow: 0 16px 40px rgba(49,71,53,.2); }
 .photo-upload-panel::backdrop { background: rgba(25,60,59,.45); }
 .photo-upload-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 26px 30px 0; }
@@ -170,7 +170,7 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/blomma3.
 
 @media (max-width: 760px) {
  main { padding-top: 70px; }
- .hero { width: min(520px, calc(100% - 48px)); min-height: auto; padding: 56px 0 60px; gap: 36px; align-items: center; }
+ .hero { width: min(520px, calc(100% - 48px)); min-height: auto; padding: 56px 0 60px; gap: 24px; align-items: center; }
  .hero-copy { top: 0; left: 0; width: fit-content; max-width: 100%; margin-inline: auto; padding: 0; text-align: left; }
  .hero h1 { font-size: clamp(62px, 15vw, 96px); line-height: 1.05; }
  .hero-date { justify-content: flex-start; margin-top: 24px; }
