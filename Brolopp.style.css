@@ -78,9 +78,9 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.
 .guest-count-control > legend { margin-bottom: 18px; text-align: center; text-transform: none; letter-spacing: 0; font-size: 14px; }
 .guest-count-options { display: flex; justify-content: center; gap: 12px; }
 .guest-count-option { position: relative; display: grid !important; place-items: center; width: 60px; height: 60px; margin: 0 !important; border: 1px solid rgba(245,240,232,.65); border-radius: 5px; color: var(--cream); font-size: 20px !important; font-weight: 500 !important; text-align: center; text-transform: none !important; letter-spacing: 0 !important; cursor: pointer; transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
-#rsvp-form .guest-count-option:hover, #rsvp-form .guest-count-option.is-selected { background-color: var(--blue) !important; border-color: var(--blue) !important; color: var(--ink) !important; }
+#rsvp-form .guest-count-option:hover, #rsvp-form .guest-count-option.is-selected { background-color: var(--sand) !important; border-color: var(--sand) !important; color: var(--ink) !important; }
 .guest-count-option input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; opacity: 0; cursor: pointer; }
-.guest-count-option:focus-within { outline: 2px solid var(--blue); outline-offset: 3px; }
+.guest-count-option:focus-within { outline: 2px solid var(--sand); outline-offset: 3px; }
 .guest-count-option span { pointer-events: none; }
 #guest-fields { display: grid; gap: 32px; }
 .person-fields { margin: 0 !important; padding: 0 !important; }
@@ -98,8 +98,8 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.
 .attendee-details label { margin: 0 0 2px; }
 .attendee-details input:not(:last-child), .attendee-details textarea:not(:last-child) { margin-bottom: 18px; }
 .rsvp-people-form > label { margin-top: 28px; }
-.rsvp-form .button-light { border-radius: 5px; background: var(--blue); color: var(--ink); }
-.rsvp-form .button-light:hover { background: #9fb6a1; }
+.rsvp-form .button-light { border-radius: 5px; background: var(--sand); color: var(--ink); }
+.rsvp-form .button-light:hover { background: var(--cream); }
 .rsvp-form button:disabled { cursor: wait; opacity: .65; }
 .form-honeypot { display: none; }
 .form-success.is-error { color: var(--cream); }
@@ -262,4 +262,7 @@ h2 em { font-style: normal; }
 @media (max-width: 760px) { .memory-slide img[src*='karusell-17'] { object-position: 22% center; } }
 
 a { text-decoration-color: var(--coral); }
-.text-link, .timeline a, .travel-grid a, .info-grid a, .photo-download, .main-nav.is-open a, .photo-delete:hover, .photo-delete-link:hover { border-bottom-color: var(--coral); }
+.text-link, .timeline a, .travel-grid a, .info-grid a, .photo-download, .photo-delete:hover, .photo-delete-link:hover { border-bottom-color: var(--coral); }
+
+.countdown-inner .eyebrow { font-size: 14px; }
+@media (min-width: 761px) { .countdown-inner { padding-left: 0; padding-right: 0; } }
