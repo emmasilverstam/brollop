@@ -1,4 +1,4 @@
-:root { --ink: #30494D; --cream: #edf1e8; --sand: #dbe5d7; --coral: #8E82A8; --blue: #AFC1B0; --line: rgba(48,73,77,.25); --serif: 'Barlow Condensed', 'Arial Narrow', sans-serif; --sans: 'DM Sans', sans-serif; }
+:root { --ink: #3D493E; --cream: #edf1e8; --sand: #dbe5d7; --coral: #8E82A8; --blue: #AFC1B0; --line: rgba(61,73,62,.25); --serif: 'Barlow Condensed', 'Arial Narrow', sans-serif; --sans: 'DM Sans', sans-serif; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--cream); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.55; }
