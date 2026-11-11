@@ -18,10 +18,10 @@ main { padding-top: 82px; }
 
 /* Botanical details from the Save the Date artwork. */
 body:before, body:after { content: ''; position: fixed; z-index: 100; width: clamp(260px, 28vw, 390px); height: clamp(260px, 28vw, 390px); background-position: center; background-size: contain; background-repeat: no-repeat; opacity: .9; pointer-events: none; }
-body:before { top: 70px; left: -18px; background-image: url('Bilder/Blomma2.png'); transform: rotate(180deg); opacity: 1; transition: top .35s ease, left .35s ease; }
+body:before { top: 70px; left: -18px; background-image: url('Bilder/vanster.png'); background-position: left top; transform: scaleY(-1); opacity: 1; transition: top .35s ease, left .35s ease; }
 body.has-scrolled:before { top: -8px; }
 body.header-visible:before { top: 62px; }
-body:after { right: -18px; bottom: -18px; background-image: url('Bilder/Blomma2.png'); }
+body:after { right: -18px; bottom: -18px; background-image: url('Bilder/blomma3.png'); }
 .about-section { background: var(--blue); color: var(--ink); position: relative; overflow: hidden; }
 @media (max-width: 760px) { body:before, body:after { width: 190px; height: 190px; } body:before { top: 66px; left: -12px; } body:after { position: fixed; right: -5px; top: auto; bottom: -10px; width: 220px; height: 220px; background-position: right bottom; transform: translateZ(0); } }
 @media (max-width: 760px) { body.header-visible:before { top: 66px; } }
@@ -266,3 +266,17 @@ a { text-decoration-color: var(--coral); }
 
 .countdown-inner .eyebrow { font-size: 14px; }
 @media (min-width: 761px) { .countdown-inner { padding-left: 0; padding-right: 0; } }
+
+body:before { left: -58px; width: clamp(335px, 36vw, 495px); height: clamp(335px, 36vw, 495px); }
+@media (max-width: 760px) { body:before { left: -52px; width: 245px; height: 245px; } }
+
+body:after { right: -68px; bottom: 2px; background-position: right center; }
+@media (max-width: 760px) { body:after { right: -60px; bottom: 10px; background-position: right center; } }
+
+body:after { width: clamp(335px, 36vw, 495px); height: clamp(335px, 36vw, 495px); }
+@media (max-width: 760px) { body:after { width: 280px; height: 280px; } }
+
+@media (max-width: 760px) {
+ body:before { width: clamp(200px, 56vw, 245px); height: clamp(200px, 56vw, 245px); }
+ body:after { width: clamp(220px, 62vw, 280px); height: clamp(220px, 62vw, 280px); }
+}
