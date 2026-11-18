@@ -92,7 +92,8 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/blomma3.
 .attendance-field { margin-top: 24px !important; }
 .attendance-field > legend { margin-bottom: 10px; text-transform: none; letter-spacing: 0; font-size: 13px; }
 .attendance-options { display: flex; flex-wrap: wrap; gap: 18px; }
-.attendance-options .choice { margin: 0 !important; font-size: 13px; }
+.attendance-options .choice { margin: 0 !important; font-size: 13px; align-items: center; }
+@media (max-width: 760px) { .attendance-options { gap: 6px 12px; } .attendance-options .choice input { flex: 0 0 18px; } }
 .attendance-options .choice input { width: 18px; height: 18px; padding: 0; margin: 0 8px 0 0; accent-color: var(--blue); }
 .attendee-details { display: grid; gap: 0; margin-top: 28px; }
 .attendee-details label { margin: 0 0 2px; text-transform: none; letter-spacing: 0; font-size: 13px; }
@@ -157,6 +158,7 @@ body:after { right: -18px; bottom: -18px; background-image: url('Bilder/blomma3.
 
 @media (min-width: 761px) { .day-grid > .timeline { grid-column: 2; } }
 
+.route-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .route-actions .button { border-radius: 8px; }
 
 .hero-copy { position: relative; top: -34px; }
@@ -189,7 +191,7 @@ h2 em { font-style: normal; }
 @media (max-width: 760px) { .hero h1 { font-size: clamp(52px, 20vw, 124px); } }
 
 .hero-amp-mobile { display: none; }
-@media (max-width: 760px) { .hero-amp-desktop, .hero-amp-first { display: none; } .hero-amp-mobile { display: inline; } }
+@media (max-width: 760px) { .hero-amp-desktop, .hero-amp-first { display: none; } .hero-amp-mobile { display: inline; margin-right: .04em; } .hero-name-line:first-child { display: inline-block; margin-left: .25em; } }
 
 .hero-date > span:only-child { font-family: var(--sans); font-style: normal; font-size: clamp(16px, 4.5vw, 22px); font-weight: 500; letter-spacing: .04em; }
 
